@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nightbuddy</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #10152b;
+  color: white;
+}
+
+.container {
+  max-width: 500px;
+  margin: auto;
+  padding: 25px 18px;
+}
+
+h1 {
+  text-align: center;
+  font-size: 34px;
+  margin-bottom: 5px;
+}
+
+.subtitle {
+  text-align: center;
+  color: #b9c0dd;
+  margin-bottom: 25px;
+}
+
+.card {
+  background: #1b2240;
+  border-radius: 18px;
+  padding: 20px;
+  margin-bottom: 16px;
+}
+
+.shift {
+  text-align: center;
+}
+
+.time {
+  font-size: 28px;
+  margin: 15px 0;
+}
+
+button {
+  width: 100%;
+  padding: 16px;
+  border: none;
+  border-radius: 12px;
+  background: #667eea;
+  color: white;
+  font-size: 17px;
+  font-weight: bold;
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+.checkin {
+  background: #252d50;
+}
+
+.menu {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.menu button {
+  background: #252d50;
+}
+
+.status {
+  text-align: center;
+  color: #9ee6a8;
+  margin-top: 12px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <h1>🌙 Nightbuddy</h1>
+  <div class="subtitle">Your night shift companion</div>
+
+  <div class="card shift">
+    <h2>Tonight's Shift</h2>
+    <div class="time">8:00 PM → 8:00 AM</div>
+
+    <button onclick="startShift()">
+      ▶ Start Shift
+    </button>
+
+    <div id="status" class="status"></div>
+  </div>
+
+  <div class="card checkin">
+    <h2>🔔 4–5 AM Check-In</h2>
+    <p>Nightbuddy will remind you to check in during the early morning hours.</p>
+
+    <button onclick="checkIn()">
+      I'm Checking In
+    </button>
+
+    <div id="checkinStatus" class="status"></div>
+  </div>
+
+  <div class="card">
+    <h2>😊 How are you feeling?</h2>
+
+    <div class="menu">
+      <button onclick="feeling('Great')">😊 Great</button>
+      <button onclick="feeling('Okay')">🙂 Okay</button>
+      <button onclick="feeling('Tired')">😴 Tired</button>
+      <button onclick="feeling('Exhausted')">🥱 Exhausted</button>
+    </div>
+
+    <div id="feelingStatus" class="status"></div>
+  </div>
+
+  <div class="card">
+    <h2>😴 Sleep</h2>
+    <p>Keep track of your sleep after your shift.</p>
+
+    <button onclick="logSleep()">
+      Log Sleep
+    </button>
+
+    <div id="sleepStatus" class="status"></div>
+  </div>
+
+  <div class="card">
+    <h2>💡 Night Shift Tip</h2>
+    <p id="tip">
+      Stay hydrated and take short breaks when you can.
+    </p>
+
+    <button onclick="newTip()">
+      Another Tip
+    </button>
+  </div>
+
+</div>
+
+<script>
+
+function startShift() {
+  document.getElementById("status").innerText =
+    "🌙 Shift started — Nightbuddy is with you.";
+}
+
+function checkIn() {
+  document.getElementById("checkinStatus").innerText =
+    "✅ 4–5 AM check-in completed.";
+}
+
+function feeling(value) {
+  document.getElementById("feelingStatus").innerText =
+    "Feeling recorded: " + value;
+}
+
+function logSleep() {
+  let hours = prompt("How many hours did you sleep?");
+  
+  if (hours) {
+    document.getElementById("sleepStatus").innerText =
+      "😴 Sleep recorded: " + hours + " hours.";
+  }
+}
+
+const tips = [
+  "Stay hydrated and take short breaks when you can.",
+  "Keep caffeine earlier in your shift if possible.",
+  "A short walk can help you feel more alert.",
+  "Try to keep your sleep routine consistent.",
+  "Make your bedroom dark and quiet when sleeping during the day."
+];
+
+function newTip() {
+  const random = Math.floor(Math.random() * tips.length);
+  document.getElementById("tip").innerText = tips[random];
+}
+
+</script>
+
+</body>
+</html>

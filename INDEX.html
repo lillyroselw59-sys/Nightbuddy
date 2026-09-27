@@ -9,185 +9,168 @@
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background: #10152b;
+  background: #080b18;
   color: white;
 }
 
-.container {
-  max-width: 500px;
-  margin: auto;
-  padding: 25px 18px;/
+header {
+  text-align: center;
+  padding: 35px 20px;
+  background: #111936;
 }
 
 h1 {
-  text-align: center;
-  font-size: 34px;
-  margin-bottom: 5px;
+  margin: 0;
+  font-size: 38px;
 }
 
 .subtitle {
-  text-align: center;
-  color: #b9c0dd;
-  margin-bottom: 25px;
+  color: #b8c5ff;
+  margin-top: 8px;
+}
+
+.container {
+  max-width: 600px;
+  margin: auto;
+  padding: 20px;
 }
 
 .card {
-  background: #1b2240;
+  background: #151d3d;
   border-radius: 18px;
   padding: 20px;
-  margin-bottom: 16px;
+  margin-bottom: 18px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.3);
 }
 
-.shift {
-  text-align: center;
-}
-
-.time {
-  font-size: 28px;
-  margin: 15px 0;
+.card h2 {
+  margin-top: 0;
 }
 
 button {
   width: 100%;
-  padding: 16px;
-  border: none;
+  padding: 15px;
+  border: 0;
   border-radius: 12px;
-  background: #667eea;
+  background: #6574ff;
   color: white;
   font-size: 17px;
-  font-weight: bold;
+  cursor: pointer;
 }
 
-button:active {
-  transform: scale(0.98);
-}
-
-.checkin {
-  background: #252d50;
-}
-
-.menu {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-}
-
-.menu button {
-  background: #252d50;
+button:hover {
+  opacity: 0.9;
 }
 
 .status {
   text-align: center;
-  color: #9ee6a8;
-  margin-top: 12px;
+  font-size: 18px;
+  margin-top: 15px;
+}
+
+.time {
+  text-align: center;
+  font-size: 32px;
+  font-weight: bold;
+}
+
+footer {
+  text-align: center;
+  color: #8993b8;
+  padding: 20px;
 }
 </style>
 </head>
 
 <body>
 
+<header>
+  <h1>🌙 Nightbuddy</h1>
+  <div class="subtitle">Your companion through the night shift</div>
+</header>
+
 <div class="container">
 
-  <h1>🌙 Nightbuddy</h1>
-  <div class="subtitle">Your night shift companion</div>
-
-  <div class="card shift">
-    <h2>Tonight's Shift</h2>
-    <div class="time">8:00 PM → 8:00 AM</div>
-
-    <button onclick="startShift()">
-      ▶ Start Shift
-    </button>
-
-    <div id="status" class="status"></div>
-  </div>
-
-  <div class="card checkin">
-    <h2>🔔 4–5 AM Check-In</h2>
-    <p>Nightbuddy will remind you to check in during the early morning hours.</p>
-
-    <button onclick="checkIn()">
-      I'm Checking In
-    </button>
-
-    <div id="checkinStatus" class="status"></div>
+  <div class="card">
+    <h2>🌃 Tonight's Shift</h2>
+    <div class="time" id="clock">--:--</div>
+    <p class="status" id="shiftStatus">Ready for your night shift.</p>
   </div>
 
   <div class="card">
-    <h2>😊 How are you feeling?</h2>
-
-    <div class="menu">
-      <button onclick="feeling('Great')">😊 Great</button>
-      <button onclick="feeling('Okay')">🙂 Okay</button>
-      <button onclick="feeling('Tired')">😴 Tired</button>
-      <button onclick="feeling('Exhausted')">🥱 Exhausted</button>
-    </div>
-
-    <div id="feelingStatus" class="status"></div>
+    <h2>💙 Night Check-in</h2>
+    <p>How are you feeling during your shift?</p>
+    <button onclick="checkIn()">I'm checking in</button>
+    <div class="status" id="checkinStatus"></div>
   </div>
 
   <div class="card">
     <h2>😴 Sleep</h2>
-    <p>Keep track of your sleep after your shift.</p>
-
-    <button onclick="logSleep()">
-      Log Sleep
-    </button>
-
-    <div id="sleepStatus" class="status"></div>
+    <p>Remember: your rest matters too.</p>
+    <button onclick="sleepReminder()">Log my sleep</button>
+    <div class="status" id="sleepStatus"></div>
   </div>
 
   <div class="card">
-    <h2>💡 Night Shift Tip</h2>
-    <p id="tip">
-      Stay hydrated and take short breaks when you can.
-    </p>
-
-    <button onclick="newTip()">
-      Another Tip
-    </button>
+    <h2>🌅 4–5am Check-in</h2>
+    <p>Nightbuddy will remind you to check in during the toughest part of the night.</p>
+    <div class="status" id="automaticStatus">
+      Waiting for the overnight check-in...
+    </div>
   </div>
 
 </div>
 
+<footer>
+  Nightbuddy V1 🌙
+</footer>
+
 <script>
 
-function startShift() {
-  document.getElementById("status").innerText =
-    "🌙 Shift started — Nightbuddy is with you.";
-}
+function updateClock() {
+  const now = new Date();
 
-function checkIn() {
-  document.getElementById("checkinStatus").innerText =
-    "✅ 4–5 AM check-in completed.";
-}
+  document.getElementById("clock").textContent =
+    now.toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit"
+    });
 
-function feeling(value) {
-  document.getElementById("feelingStatus").innerText =
-    "Feeling recorded: " + value;
-}
+  const hour = now.getHours();
 
-function logSleep() {
-  let hours = prompt("How many hours did you sleep?");
-  
-  if (hours) {
-    document.getElementById("sleepStatus").innerText =
-      "😴 Sleep recorded: " + hours + " hours.";
+  if (hour >= 20 || hour < 8) {
+    document.getElementById("shiftStatus").textContent =
+      "🌙 Night shift mode";
+  } else {
+    document.getElementById("shiftStatus").textContent =
+      "☀️ Daytime";
   }
 }
 
-const tips = [
-  "Stay hydrated and take short breaks when you can.",
-  "Keep caffeine earlier in your shift if possible.",
-  "A short walk can help you feel more alert.",
-  "Try to keep your sleep routine consistent.",
-  "Make your bedroom dark and quiet when sleeping during the day."
-];
-
-function newTip() {
-  const random = Math.floor(Math.random() * tips.length);
-  document.getElementById("tip").innerText = tips[random];
+function checkIn() {
+  document.getElementById("checkinStatus").textContent =
+    "💙 Thanks for checking in. Keep going — you've got this.";
 }
+
+function sleepReminder() {
+  document.getElementById("sleepStatus").textContent =
+    "😴 Remember to protect your sleep after your shift.";
+}
+
+function automaticCheckIn() {
+  const hour = new Date().getHours();
+
+  if (hour >= 4 && hour < 5) {
+    document.getElementById("automaticStatus").textContent =
+      "🔔 Nightbuddy check-in: How are you feeling?";
+  }
+}
+
+updateClock();
+automaticCheckIn();
+
+setInterval(updateClock, 1000);
+setInterval(automaticCheckIn, 60000);
 
 </script>
 
